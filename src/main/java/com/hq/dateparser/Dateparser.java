@@ -1,13 +1,6 @@
-/**
- *===============================================================
- * @CopyRight:    北京五八信息技术有限公司技术中心主站技术部
- * @author:       Zhang Ning
- * @date:         2014年12月13日 下午9:58:42
- * @version:      1.0.0
- *===============================================================
- * 修订日期                                                         修订人                                                    描述
- */
+
 package com.hq.dateparser;
+
 
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
@@ -24,8 +17,8 @@ import java.util.regex.Pattern;
 
 /**
  * 
- * @author Zhang Ning
- * @date   2014年12月13日 下午9:58:42
+ * @author qiaohua
+ * @date   2015年5月16日 下午
  * @see
  */
 public class Dateparser {
