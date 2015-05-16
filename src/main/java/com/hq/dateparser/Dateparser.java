@@ -148,7 +148,7 @@ public class Dateparser {
      * 
      * @param dateStr
      * @return
-     * @author Zhang Ning
+     * @author qiaohua
      * @date   2015年2月10日 下午2:52:49
      * @see   
      * @since  1.0.0
@@ -187,7 +187,6 @@ public class Dateparser {
      * 
      * @param noYearDate
      * @return
-     * @author Zhang Ning
      * @date   2015年1月21日 下午5:49:10
      * @see   
      * @since  1.0.0
