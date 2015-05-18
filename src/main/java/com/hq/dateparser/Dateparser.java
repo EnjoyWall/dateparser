@@ -23,24 +23,6 @@ import java.util.regex.Pattern;
  */
 public class Dateparser {
 
-    private static final Map<Pattern,DateFormat> DATA_PATTERNS_FORMAT_MAP;
-    static {
-        DATA_PATTERNS_FORMAT_MAP = new LinkedHashMap<Pattern, DateFormat>();
-
-        DATA_PATTERNS_FORMAT_MAP.put(Pattern.compile("^[0-9]{4} [0-9]{1,2} [0-9]{1,2}$"),new SimpleDateFormat("yyyy MM dd",Locale.US));
-        DATA_PATTERNS_FORMAT_MAP.put(Pattern.compile("^[0-9]{4} [0-9]{1,2} [0-9]{1,2} [0-9]{1,2}:[0-9]{1,2} (PM|AM)$"),new SimpleDateFormat("yyyy MM dd hh:mm a",Locale.US));
-        DATA_PATTERNS_FORMAT_MAP.put(Pattern.compile("^[0-9]{4} [0-9]{1,2} [0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}$"),new SimpleDateFormat("yyyy MM dd HH:mm"));
-        DATA_PATTERNS_FORMAT_MAP.put(Pattern.compile("^[0-9]{4} [0-9]{1,2} [0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$"),new SimpleDateFormat("yyyy MM dd HH:mm:ss"));
-        DATA_PATTERNS_FORMAT_MAP.put(Pattern.compile("^[0-9]{1,2} [0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}$"),new SimpleDateFormat("MM dd HH:mm"));
-        DATA_PATTERNS_FORMAT_MAP.put(Pattern.compile("^[0-9]{4}年[0-9]{1,2}月[0-9]{1,2}日$"),new SimpleDateFormat("yyyy年MM月dd日"));
-        DATA_PATTERNS_FORMAT_MAP.put(Pattern.compile("^[0-9]{1,2} [0-9]{1,2} [0-9]{4}$"),new SimpleDateFormat("MM dd yyyy"));
-        DATA_PATTERNS_FORMAT_MAP.put(Pattern.compile("^[0-9]{1,2}:[0-9]{1,2} [0-9]{1,2} [0-9]{1,2} [0-9]{4}$"),new SimpleDateFormat("HH:mm MM dd yyyy"));
-        DATA_PATTERNS_FORMAT_MAP.put(Pattern.compile("^[a-z|A-Z]{3} [0-9]{1,2} [0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}$"),new SimpleDateFormat("MMM dd yy HH:mm",Locale.US));
-        DateFormatSymbols chineseMonthDfs = new DateFormatSymbols();
-        chineseMonthDfs.setMonths(new String[]{"一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"});
-        chineseMonthDfs.setShortMonths(new String[]{"一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"});
-        DATA_PATTERNS_FORMAT_MAP.put(Pattern.compile("^[\\u4E00-\\u9FA5]{2,3} [0-9]{1,2} [0-9]{4}$"),new SimpleDateFormat("MMM dd yyyy",chineseMonthDfs));
-    }
 
     /**
      *英语中对顺序的提示，如1st，2nd，3rd，4th，等
@@ -105,7 +87,8 @@ public class Dateparser {
         tempDateStr = tempDateStr.toUpperCase();
 
         Date resultDate = null;
-        for (Map.Entry<Pattern,DateFormat> entry : DATA_PATTERNS_FORMAT_MAP.entrySet() ){
+        Map<Pattern,DateFormat> dataPatternsFormatMap = getDataPatternsFormatMap();
+        for (Map.Entry<Pattern,DateFormat> entry : dataPatternsFormatMap.entrySet() ){
             Matcher tempMatcher = entry.getKey().matcher(tempDateStr);
             if(tempMatcher.find()){
                 try {
@@ -123,6 +106,28 @@ public class Dateparser {
         	resultDate = parseDeltaDate(tempDateStr);
         }
         return resultDate;
+    }
+
+    private static Map<Pattern, DateFormat> getDataPatternsFormatMap() {
+        Map<Pattern,DateFormat> dataPatternsFormatMap;
+
+        dataPatternsFormatMap = new LinkedHashMap<Pattern, DateFormat>();
+
+        dataPatternsFormatMap.put(Pattern.compile("^[0-9]{4} [0-9]{1,2} [0-9]{1,2}$"), new SimpleDateFormat("yyyy MM dd", Locale.US));
+        dataPatternsFormatMap.put(Pattern.compile("^[0-9]{4} [0-9]{1,2} [0-9]{1,2} [0-9]{1,2}:[0-9]{1,2} (PM|AM)$"), new SimpleDateFormat("yyyy MM dd hh:mm a", Locale.US));
+        dataPatternsFormatMap.put(Pattern.compile("^[0-9]{4} [0-9]{1,2} [0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}$"), new SimpleDateFormat("yyyy MM dd HH:mm"));
+        dataPatternsFormatMap.put(Pattern.compile("^[0-9]{4} [0-9]{1,2} [0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}$"), new SimpleDateFormat("yyyy MM dd HH:mm:ss"));
+        dataPatternsFormatMap.put(Pattern.compile("^[0-9]{1,2} [0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}$"), new SimpleDateFormat("MM dd HH:mm"));
+        dataPatternsFormatMap.put(Pattern.compile("^[0-9]{4}年[0-9]{1,2}月[0-9]{1,2}日$"), new SimpleDateFormat("yyyy年MM月dd日"));
+        dataPatternsFormatMap.put(Pattern.compile("^[0-9]{1,2} [0-9]{1,2} [0-9]{4}$"), new SimpleDateFormat("MM dd yyyy"));
+        dataPatternsFormatMap.put(Pattern.compile("^[0-9]{1,2}:[0-9]{1,2} [0-9]{1,2} [0-9]{1,2} [0-9]{4}$"), new SimpleDateFormat("HH:mm MM dd yyyy"));
+        dataPatternsFormatMap.put(Pattern.compile("^[a-z|A-Z]{3} [0-9]{1,2} [0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}$"), new SimpleDateFormat("MMM dd yy HH:mm", Locale.US));
+        DateFormatSymbols chineseMonthDfs = new DateFormatSymbols();
+        chineseMonthDfs.setMonths(new String[]{"一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"});
+        chineseMonthDfs.setShortMonths(new String[]{"一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"});
+        dataPatternsFormatMap.put(Pattern.compile("^[\\u4E00-\\u9FA5]{2,3} [0-9]{1,2} [0-9]{4}$"), new SimpleDateFormat("MMM dd yyyy", chineseMonthDfs));
+
+        return dataPatternsFormatMap;
     }
     
     private static String convertDate(String tempDateStr) {
